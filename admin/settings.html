@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Colochess Admin - Settings & Push</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <style>body { background-color: #f4f6f9; }</style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand font-weight-bold" href="dashboard.html">Colochess Admin</a>
+      <div class="collapse navbar-collapse" id="nav">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item"><a class="nav-link" href="dashboard.html">Overview</a></li>
+          <li class="nav-item"><a class="nav-link" href="users.html">Users</a></li>
+          <li class="nav-item"><a class="nav-link" href="withdrawals.html">Withdrawals</a></li>
+          <li class="nav-item active"><a class="nav-link" href="settings.html">Settings & Push</a></li>
+        </ul>
+        <button class="btn btn-outline-light btn-sm" onclick="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container my-4">
+    <div class="row">
+      <!-- Anti-Fraud & Keys -->
+      <div class="col-md-6 mb-4">
+        <div class="card shadow-sm p-4">
+          <h4 class="mb-3">Anti-Fraud & App Configurations</h4>
+          <form id="settings-form">
+            <div class="custom-control custom-switch mb-3">
+              <input type="checkbox" class="custom-control-input" id="auto-ban-vpn">
+              <label class="custom-control-label" for="auto-ban-vpn">Auto-Ban VPN / Proxy Detection</label>
+            </div>
+            <div class="custom-control custom-switch mb-3">
+              <input type="checkbox" class="custom-control-input" id="auto-ban-root">
+              <label class="custom-control-label" for="auto-ban-root">Auto-Ban Rooted Devices</label>
+            </div>
+            <div class="custom-control custom-switch mb-3">
+              <input type="checkbox" class="custom-control-input" id="auto-ban-multi">
+              <label class="custom-control-label" for="auto-ban-multi">Auto-Ban Multi-Accounts (Same Device ID)</label>
+            </div>
+
+            <hr>
+            <div class="form-group">
+              <label for="onesignal-app-id">OneSignal App ID</label>
+              <input type="text" id="onesignal-app-id" class="form-control" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+            </div>
+            <div class="form-group">
+              <label for="onesignal-rest-key">OneSignal REST API Key</label>
+              <input type="password" id="onesignal-rest-key" class="form-control" placeholder="••••••••••••••••••••">
+            </div>
+            <button type="submit" class="btn btn-primary">Save Settings</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- OneSignal Push Notification Sender -->
+      <div class="col-md-6 mb-4">
+        <div class="card shadow-sm p-4">
+          <h4 class="mb-3">Broadcast Push Notification</h4>
+          <form id="push-form">
+            <div class="form-group">
+              <label for="push-title">Notification Title</label>
+              <input type="text" id="push-title" class="form-control" placeholder="Special Coins Bonus Today!" required>
+            </div>
+            <div class="form-group">
+              <label for="push-message">Notification Body</label>
+              <textarea id="push-message" class="form-control" rows="4" placeholder="Open the app and spin the wheel to claim extra rewards." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Send Broadcast Notification</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    loadSettings();
+    document.getElementById('settings-form').addEventListener('submit', saveSettings);
+    document.getElementById('push-form').addEventListener('submit', sendPushNotification);
+  </script>
+</body>
+</html>

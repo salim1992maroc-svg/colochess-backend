@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Colochess Admin - Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <style>
+    body { background-color: #f4f6f9; }
+    .stat-card { border-radius: 8px; border: none; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: transform 0.2s; }
+    .stat-card:hover { transform: translateY(-2px); }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand font-weight-bold" href="dashboard.html">Colochess Admin</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="nav">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active"><a class="nav-link" href="dashboard.html">Overview</a></li>
+          <li class="nav-item"><a class="nav-link" href="users.html">Users</a></li>
+          <li class="nav-item"><a class="nav-link" href="withdrawals.html">Withdrawals</a></li>
+          <li class="nav-item"><a class="nav-link" href="settings.html">Settings & Push</a></li>
+        </ul>
+        <button class="btn btn-outline-light btn-sm" onclick="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>System Overview</h2>
+      <span class="badge badge-success px-3 py-2">Cloudflare Workers + D1 Active</span>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3 mb-3">
+        <div class="card stat-card bg-primary text-white p-3">
+          <h5>Total Users</h5>
+          <h2 id="total-users" class="font-weight-bold mb-0">...</h2>
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="card stat-card bg-success text-white p-3">
+          <h5>Points in Circulation</h5>
+          <h2 id="total-points" class="font-weight-bold mb-0">...</h2>
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="card stat-card bg-warning text-dark p-3">
+          <h5>Pending Withdrawals</h5>
+          <h2 id="pending-withdrawals" class="font-weight-bold mb-0">...</h2>
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="card stat-card bg-info text-white p-3">
+          <h5>Completed Withdrawals</h5>
+          <h2 id="completed-withdrawals" class="font-weight-bold mb-0">...</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mt-4 p-4 shadow-sm">
+      <h4>Quick Links</h4>
+      <div class="d-flex flex-wrap gap-2 mt-2">
+        <a href="users.html" class="btn btn-outline-primary mr-2 mb-2">Manage Users & Balances</a>
+        <a href="withdrawals.html" class="btn btn-outline-warning mr-2 mb-2">Review Pending Cashouts</a>
+        <a href="settings.html" class="btn btn-outline-secondary mr-2 mb-2">Fraud Toggles & Push Notifications</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    loadStats();
+  </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+name = "colochess-backend"
+main = "worker/src/index.ts"
+compatibility_date = "2024-09-25"
+compatibility_flags = ["nodejs_compat"]
+
+# Cloudflare D1 Database Binding
+[[d1_databases]]
+binding = "DB"
+database_name = "colochess-db"
+database_id = "your-d1-database-id-here"
+
+[vars]
+ENVIRONMENT = "production"
+EMAIL_FROM = "noreply@colochess.com"
+
+# Optional Cloudflare Pages / Static Assets for the Admin Dashboard:
+# [site]
+# bucket = "./admin"

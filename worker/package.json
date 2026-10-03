@@ -1,0 +1,16 @@
+{
+  "name": "colochess-worker",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker & D1 backend for Colochess Android & Admin Panel",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240925.0",
+    "typescript": "^5.5.4",
+    "wrangler": "^3.78.10"
+  }
+}
