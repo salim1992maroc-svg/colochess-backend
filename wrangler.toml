@@ -1,13 +1,13 @@
 name = "colochess-backend"
 main = "worker/src/index.ts"
-compatibility_date = "2024-09-25"
+compatibility_date = "2026-10-04"
 compatibility_flags = ["nodejs_compat"]
 
 # Cloudflare D1 Database Binding
 [[d1_databases]]
 binding = "DB"
 database_name = "colochess-db"
-database_id = "your-d1-database-id-here"
+database_id = "a6f82506-0e5c-4cac-971b-a8ac0c1b34a7"
 
 [vars]
 ENVIRONMENT = "production"
