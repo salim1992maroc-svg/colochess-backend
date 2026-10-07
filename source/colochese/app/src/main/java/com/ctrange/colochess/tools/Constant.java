@@ -3,8 +3,8 @@ package com.ctrange.colochess.tools;
 public class Constant {
 
     // Main domain & base URL configured for HTTPS directly through Cloudflare
-    public static final String MAIN_URL = "https://pointgam.colochess.com/";
-    public static final String BASE_URL = MAIN_URL + "admin_game/";
+    public static final String MAIN_URL = "https://colochess-backend.malakmalki125.workers.dev/";
+    public static final String BASE_URL = MAIN_URL;
 
     // API Routes (exact mappings preserved)
     public static final String CHECK_DEVICE_ID = BASE_URL + "api/checkDeviceID.php";

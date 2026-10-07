@@ -18,13 +18,41 @@ export async function handleOfferwallsApi(env: Env): Promise<Response> {
 }
 
 export async function handleGetIds(env: Env): Promise<Response> {
-  // Returns SDK placement & app IDs
-  const settings = await env.DB.prepare('SELECT * FROM site_settings WHERE id = 1 LIMIT 1').first<Record<string, unknown>>();
+  // The legacy Android client expects an ARRAY of offer-network records, not
+  // the site_settings object. Support both the newer network columns and the
+  // original offerwalls schema so the endpoint remains backward compatible.
+  try {
+    const modern = await env.DB.prepare(
+      `SELECT network_name, ids_, placem, app_ids, app_placement, title, url_or_sdk_key, description
+       FROM offerwalls WHERE status = 1 ORDER BY id ASC`
+    ).all<Record<string, unknown>>();
 
-  return jsonResponse({
-    status: 200,
-    ...settings,
-  });
+    const rows = (modern.results || []).map((row) => ({
+      network_name: String(row.network_name ?? row.title ?? ''),
+      ids_: String(row.ids_ ?? row.app_ids ?? row.url_or_sdk_key ?? ''),
+      placem: String(row.placem ?? row.app_placement ?? row.description ?? ''),
+      app_ids: String(row.app_ids ?? row.ids_ ?? row.url_or_sdk_key ?? ''),
+      app_placement: String(row.app_placement ?? row.placem ?? row.description ?? ''),
+    }));
+
+    return jsonResponse(rows);
+  } catch {
+    // Older D1 schema has no network_name/ids_/placem columns. Fall back to
+    // the original columns instead of returning HTTP 500 to the Android app.
+    const legacy = await env.DB.prepare(
+      'SELECT title, description, url_or_sdk_key FROM offerwalls WHERE status = 1 ORDER BY id ASC'
+    ).all<{ title: string; description: string; url_or_sdk_key: string }>();
+
+    const rows = (legacy.results || []).map((row) => ({
+      network_name: row.title || '',
+      ids_: row.url_or_sdk_key || '',
+      placem: row.description || '',
+      app_ids: row.url_or_sdk_key || '',
+      app_placement: row.description || '',
+    }));
+
+    return jsonResponse(rows);
+  }
 }
 
 export async function handleDialogMsg(env: Env): Promise<Response> {
@@ -33,7 +61,7 @@ export async function handleDialogMsg(env: Env): Promise<Response> {
   ).first<{ title: string; message: string; image: string; status: number }>();
 
   if (!dialog || dialog.status !== 1) {
-    return jsonResponse({ status: 0, title: '', message: '', image: '' });
+    return jsonResponse({ status: 0, success: false, title: '', message: '', image: '' });
   }
 
   return jsonResponse({

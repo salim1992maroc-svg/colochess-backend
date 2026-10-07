@@ -369,9 +369,19 @@ async function runTests() {
     const req2 = new Request('https://api.colochess.com/api/ids.php');
     const res2 = await worker.fetch(req2, env);
     const json2 = await res2.json();
-    if (json2.status !== 200) throw new Error('IDs API failed');
+    if (!Array.isArray(json2)) throw new Error(`IDs API must return an array for Android compatibility: ${JSON.stringify(json2)}`);
+    for (const item of json2) {
+      if (typeof item.network_name !== 'string' || typeof item.ids_ !== 'string' || typeof item.placem !== 'string') {
+        throw new Error(`Invalid IDs item shape: ${JSON.stringify(item)}`);
+      }
+    }
 
-    console.log(`[PASS] 5. Offerwall Discovery & SDK IDs verified.`);
+    const req3 = new Request('https://api.colochess.com/api/dialogmsg.php');
+    const res3 = await worker.fetch(req3, env);
+    const json3 = await res3.json();
+    if (json3.status !== 0 || typeof json3.message !== 'string') throw new Error(`Dialog API failed: ${JSON.stringify(json3)}`);
+
+    console.log(`[PASS] 5. Offerwall IDs & dialog API verified.`);
   }
 
   // 6. Test OkSpin Postback (Historical & Standard Parameters)
