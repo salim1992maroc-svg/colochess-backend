@@ -227,6 +227,36 @@ export default {
         }
       }
 
+      // -------------------------------------------------------------
+      // D. ADMIN DASHBOARD STATIC FILES
+      // -------------------------------------------------------------
+      if (normalizedPath === '/admin' || normalizedPath === '/admin/') {
+        return Response.redirect(new URL('/admin/index.html', request.url), 302);
+      }
+
+      if (normalizedPath.startsWith('/admin/')) {
+        const fileName = normalizedPath.slice('/admin/'.length);
+
+        const allowedFiles = new Set([
+          'index.html',
+          'dashboard.html',
+          'users.html',
+          'withdrawals.html',
+          'settings.html',
+          'app.js',
+        ]);
+
+        if (allowedFiles.has(fileName)) {
+          const file = await env.ASSETS?.fetch(
+            new Request(new URL(`/${fileName}`, request.url))
+          );
+
+          if (file && file.status !== 404) {
+            return file;
+          }
+        }
+      }
+
       // Health / Status endpoint
       if (normalizedPath === '/' || normalizedPath === '/status') {
         return jsonResponse({

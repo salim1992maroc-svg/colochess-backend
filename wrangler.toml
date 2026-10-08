@@ -16,3 +16,7 @@ EMAIL_FROM = "noreply@colochess.com"
 # Optional Cloudflare Pages / Static Assets for the Admin Dashboard:
 # [site]
 # bucket = "./admin"
+
+[assets]
+directory = "./admin"
+binding = "ASSETS"
